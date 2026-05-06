@@ -1,0 +1,111 @@
+{
+  "/Users/yangpei/Documents/lambda-github-webhook/serverless.yaml": {
+    "versionFramework": "4.35.0",
+    "servicePath": "/Users/yangpei/Documents/lambda-github-webhook/serverless.yaml",
+    "serviceConfigFileName": "serverless.yaml",
+    "service": {
+      "service": "lambda-test",
+      "frameworkVersion": "4",
+      "provider": {
+        "name": "aws",
+        "runtime": "python3.12",
+        "region": "ap-northeast-1",
+        "deploymentBucket": "lambda-test-deployments-2435",
+        "stage": "dev",
+        "versionFunctions": true,
+        "deploymentBucketObject": {
+          "name": "lambda-test-deployments-2435"
+        },
+        "environment": {
+          "IS_LOCAL": "true"
+        }
+      },
+      "functions": {
+        "api": {
+          "handler": "src/handler.lambda_handler",
+          "events": [
+            {
+              "httpApi": {
+                "path": "/webhook",
+                "method": "ANY"
+              }
+            }
+          ],
+          "name": "lambda-test-dev-api"
+        }
+      }
+    },
+    "provider": {
+      "name": "aws",
+      "runtime": "python3.12",
+      "region": "ap-northeast-1",
+      "deploymentBucket": "lambda-test-deployments-2435",
+      "stage": "dev",
+      "versionFunctions": true,
+      "deploymentBucketObject": {
+        "name": "lambda-test-deployments-2435"
+      },
+      "environment": {
+        "IS_LOCAL": "true"
+      }
+    },
+    "dashboard": {
+      "isEnabledForService": false,
+      "requiredAuthentication": false,
+      "orgFeaturesInUse": null,
+      "orgObservabilityIntegrations": null,
+      "serviceAppId": null,
+      "serviceProvider": null,
+      "instanceParameters": null
+    },
+    "error": {
+      "message": "`python3 -u /Users/yangpei/.serverless/releases/4.35.0/package/lib/plugins/aws/invoke-local/runtime-wrappers/invoke.py src/handler lambda_handler` Exited with code 1",
+      "stack": "Error: `python3 -u /Users/yangpei/.serverless/releases/4.35.0/package/lib/plugins/aws/invoke-local/runtime-wrappers/invoke.py src/handler lambda_handler` Exited with code 1\n    at ChildProcess.<anonymous> (file:///Users/yangpei/.serverless/releases/4.35.0/package/dist/sf-core.js:407:62419)\n    at ChildProcess.emit (node:events:508:28)\n    at ChildProcess.emit (node:domain:489:12)\n    at maybeClose (node:internal/child_process:1100:16)\n    at Socket.<anonymous> (node:internal/child_process:457:11)\n    at Socket.emit (node:events:508:28)\n    at Socket.emit (node:domain:489:12)\n    at Pipe.<anonymous> (node:net:346:12)",
+      "code": 1
+    },
+    "serviceRawFile": "service: lambda-test\nframeworkVersion: '4'\n\nprovider:\n  name: aws\n  runtime: python3.12\n  region: ap-northeast-1\n  deploymentBucket:\n    name: lambda-test-deployments-2435\n\nfunctions:\n  api:\n    handler: src/handler.lambda_handler\n    events:\n    - httpApi:\n        path: /webhook\n        method: ANY",
+    "command": [
+      "invoke",
+      "local"
+    ],
+    "options": {
+      "function": "api",
+      "path": "events/event.json"
+    },
+    "orgId": "4433eee4-58bf-4cb7-9ac1-23fa43f775ff",
+    "orgName": "edwardyang",
+    "userId": "t3jYLwlHKDrrsxY0lk",
+    "userName": "edwardyang",
+    "serviceProviderAwsAccountId": "640168422435",
+    "serviceProviderAwsCfStackName": "lambda-test-dev",
+    "serviceProviderAwsCfStackId": "arn:aws:cloudformation:ap-northeast-1:640168422435:stack/lambda-test-dev/b52907a0-478a-11f1-9b0d-0652ec77ceb5",
+    "serviceProviderAwsCfStackCreated": "2026-05-04T07:27:30.187Z",
+    "serviceProviderAwsCfStackUpdated": "2026-05-04T07:40:27.582Z",
+    "serviceProviderAwsCfStackStatus": "UPDATE_COMPLETE",
+    "serviceProviderAwsCfStackOutputs": [
+      {
+        "OutputKey": "ApiLambdaFunctionQualifiedArn",
+        "OutputValue": "arn:aws:lambda:ap-northeast-1:640168422435:function:lambda-test-dev-api:2",
+        "Description": "Current Lambda function version",
+        "ExportName": "sls-lambda-test-dev-ApiLambdaFunctionQualifiedArn"
+      },
+      {
+        "OutputKey": "HttpApiId",
+        "OutputValue": "mpkls95d85",
+        "Description": "Id of the HTTP API",
+        "ExportName": "sls-lambda-test-dev-HttpApiId"
+      },
+      {
+        "OutputKey": "ServerlessDeploymentBucketName",
+        "OutputValue": "lambda-test-deployments-2435",
+        "ExportName": "sls-lambda-test-dev-ServerlessDeploymentBucketName"
+      },
+      {
+        "OutputKey": "HttpApiUrl",
+        "OutputValue": "https://mpkls95d85.execute-api.ap-northeast-1.amazonaws.com",
+        "Description": "URL of the HTTP API",
+        "ExportName": "sls-lambda-test-dev-HttpApiUrl"
+      }
+    ]
+  }
+}

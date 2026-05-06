@@ -1,0 +1,17 @@
+service: lambda-test
+frameworkVersion: '4'
+
+provider:
+  name: aws
+  runtime: python3.12
+  region: ap-northeast-1
+  deploymentBucket:
+    name: lambda-test-deployments-2435
+
+functions:
+  api:
+    handler: src/handler.lambda_handler
+    events:
+    - httpApi:
+        path: /webhook
+        method: ANY
