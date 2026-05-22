@@ -31,7 +31,10 @@ def lambda_handler(event, context):
 
     # 验证签名是否匹配
     if not hmac.compare_digest(local_signature, signature):
-        return {"statusCode": 403, "body": "Invalid signature"}
+        print ("local_signature", local_signature)
+        print ("signature", signature)
+
+        return {"statusCode": 403, "body": "Invalid signature==Ed"}
 
     print("Received event:", json.dumps(event, indent=2))
 
