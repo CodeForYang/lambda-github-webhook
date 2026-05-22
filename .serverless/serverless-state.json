@@ -8,7 +8,6 @@
       "name": "aws",
       "runtime": "python3.12",
       "region": "ap-northeast-1",
-      "role": "arn:aws:iam::640168422435:role/sls-deployment-role",
       "deploymentBucket": "lambda-test-deployments-2435",
       "stage": "dev",
       "versionFunctions": true,
@@ -25,32 +24,115 @@
               "LogGroupName": "/aws/lambda/lambda-test-dev-api"
             }
           },
+          "IamRoleLambdaExecution": {
+            "Type": "AWS::IAM::Role",
+            "Properties": {
+              "AssumeRolePolicyDocument": {
+                "Version": "2012-10-17",
+                "Statement": [
+                  {
+                    "Effect": "Allow",
+                    "Principal": {
+                      "Service": [
+                        "lambda.amazonaws.com"
+                      ]
+                    },
+                    "Action": [
+                      "sts:AssumeRole"
+                    ]
+                  }
+                ]
+              },
+              "Policies": [
+                {
+                  "PolicyName": {
+                    "Fn::Join": [
+                      "-",
+                      [
+                        "lambda-test",
+                        "dev",
+                        "lambda"
+                      ]
+                    ]
+                  },
+                  "PolicyDocument": {
+                    "Version": "2012-10-17",
+                    "Statement": [
+                      {
+                        "Effect": "Allow",
+                        "Action": [
+                          "logs:CreateLogStream",
+                          "logs:CreateLogGroup",
+                          "logs:TagResource"
+                        ],
+                        "Resource": [
+                          {
+                            "Fn::Sub": "arn:${AWS::Partition}:logs:${AWS::Region}:${AWS::AccountId}:log-group:/aws/lambda/lambda-test-dev*:*"
+                          }
+                        ]
+                      },
+                      {
+                        "Effect": "Allow",
+                        "Action": [
+                          "logs:PutLogEvents"
+                        ],
+                        "Resource": [
+                          {
+                            "Fn::Sub": "arn:${AWS::Partition}:logs:${AWS::Region}:${AWS::AccountId}:log-group:/aws/lambda/lambda-test-dev*:*:*"
+                          }
+                        ]
+                      }
+                    ]
+                  }
+                }
+              ],
+              "Path": "/",
+              "RoleName": {
+                "Fn::Join": [
+                  "-",
+                  [
+                    "lambda-test",
+                    "dev",
+                    {
+                      "Ref": "AWS::Region"
+                    },
+                    "lambdaRole"
+                  ]
+                ]
+              }
+            }
+          },
           "ApiLambdaFunction": {
             "Type": "AWS::Lambda::Function",
             "Properties": {
               "Code": {
                 "S3Bucket": "lambda-test-deployments-2435",
-                "S3Key": "serverless/lambda-test/dev/1779430284406-2026-05-22T06:11:24.406Z/lambda-test.zip"
+                "S3Key": "serverless/lambda-test/dev/1779430335752-2026-05-22T06:12:15.752Z/lambda-test.zip"
               },
               "Handler": "src/handler.lambda_handler",
               "Runtime": "python3.12",
               "FunctionName": "lambda-test-dev-api",
               "MemorySize": 1024,
               "Timeout": 6,
-              "Role": "arn:aws:iam::640168422435:role/sls-deployment-role"
+              "Role": {
+                "Fn::GetAtt": [
+                  "IamRoleLambdaExecution",
+                  "Arn"
+                ]
+              }
             },
             "DependsOn": [
               "ApiLogGroup"
             ]
           },
-          "ApiLambdaVersion3J6vB6rflGW2FLZc29S4HHyDFKgN6QaxY3lmdenlMKI": {
+          "ApiLambdaVersionN6RI9ynhFGpbh3OeslvBjaPD4kgLt3dIe0D2p55KRM": {
             "Type": "AWS::Lambda::Version",
             "DeletionPolicy": "Retain",
             "Properties": {
               "FunctionName": {
                 "Ref": "ApiLambdaFunction"
               },
-              "CodeSha256": "uChyIoBCpHRxmx4vwMYewK4wbgeQuLlNXw7P4eh/r6I="
+              "CodeSha256": "7Dji81Y+gEvwkyKEQnM+vfCchIuThgypRRUgDpmOwuM="
             }
           },
           "HttpApi": {
@@ -156,7 +238,7 @@
           "ApiLambdaFunctionQualifiedArn": {
             "Description": "Current Lambda function version",
             "Value": {
-              "Ref": "ApiLambdaVersion3J6vB6rflGW2FLZc29S4HHyDFKgN6QaxY3lmdenlMKI"
+              "Ref": "ApiLambdaVersionN6RI9ynhFGpbh3OeslvBjaPD4kgLt3dIe0D2p55KRM"
             },
             "Export": {
               "Name": "sls-lambda-test-dev-ApiLambdaFunctionQualifiedArn"
@@ -220,7 +302,7 @@
         "timeout": 6,
         "runtime": "python3.12",
         "vpc": {},
-        "versionLogicalId": "ApiLambdaVersion3J6vB6rflGW2FLZc29S4HHyDFKgN6QaxY3lmdenlMKI"
+        "versionLogicalId": "ApiLambdaVersionN6RI9ynhFGpbh3OeslvBjaPD4kgLt3dIe0D2p55KRM"
       }
     },
     "configValidationMode": "warn",
@@ -241,7 +323,7 @@
     "artifact": "/Users/yangpei/Documents/lambda-github-webhook/.serverless/lambda-test.zip"
   },
   "package": {
-    "artifactDirectoryName": "serverless/lambda-test/dev/1779430284406-2026-05-22T06:11:24.406Z",
+    "artifactDirectoryName": "serverless/lambda-test/dev/1779430335752-2026-05-22T06:12:15.752Z",
     "artifact": "lambda-test.zip"
   }
 }

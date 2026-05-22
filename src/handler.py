@@ -36,6 +36,5 @@ def lambda_handler(event, context):
         return {"statusCode": 403, "body": "Invalid signature"}
 
     print("Received event:", json.dumps(event, indent=2))
-    
+
     return {"StatusCode": 200, "body": "Webhook received"}
-    
