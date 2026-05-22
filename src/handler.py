@@ -15,8 +15,6 @@ def get_secret():
     return secret
 
 
-
-
 def lambda_handler(event, context):
     # request verification
     github_signature = event['headers'].get('x-hub-signature-256', '')
