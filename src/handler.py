@@ -18,7 +18,7 @@ def get_secret():
 
 
 def lambda_handler(event, context):
-    # TODO implement
+    # request verification
     github_signature = event['headers'].get('x-hub-signature-256', '')
     if not github_signature:
         return {"statusCode": 403, "body": "Signature missing"}
