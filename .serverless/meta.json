@@ -109,7 +109,7 @@
               "Properties": {
                 "Code": {
                   "S3Bucket": "lambda-test-deployments-2435",
-                  "S3Key": "serverless/lambda-test/dev/1779434481549-2026-05-22T07:21:21.549Z/lambda-test.zip"
+                  "S3Key": "serverless/lambda-test/dev/1779436189342-2026-05-22T07:49:49.342Z/lambda-test.zip"
                 },
                 "Handler": "src/handler.lambda_handler",
                 "Runtime": "python3.12",
@@ -127,14 +127,14 @@
                 "ApiLogGroup"
               ]
             },
-            "ApiLambdaVersiona34ozCAp3t9V1MIaXTfDOy2LRQExcpagZFhiS9NXt8": {
+            "ApiLambdaVersionideoAUeSCJYSM5uPU6I8On8FZRmJSh13tgi9qWsYUE": {
               "Type": "AWS::Lambda::Version",
               "DeletionPolicy": "Retain",
               "Properties": {
                 "FunctionName": {
                   "Ref": "ApiLambdaFunction"
                 },
-                "CodeSha256": "hQvszlPzhTHnrjRcNu8sBF0kSuWCnRdra+aQaQy6ka8="
+                "CodeSha256": "WR+cQlvUDrQleyPNeXruMKuVx2Gvnz6lK1YD5CV3BkU="
               }
             },
             "HttpApi": {
@@ -243,7 +243,7 @@
             "ApiLambdaFunctionQualifiedArn": {
               "Description": "Current Lambda function version",
               "Value": {
-                "Ref": "ApiLambdaVersiona34ozCAp3t9V1MIaXTfDOy2LRQExcpagZFhiS9NXt8"
+                "Ref": "ApiLambdaVersionideoAUeSCJYSM5uPU6I8On8FZRmJSh13tgi9qWsYUE"
               },
               "Export": {
                 "Name": "sls-lambda-test-dev-ApiLambdaFunctionQualifiedArn"
@@ -306,7 +306,7 @@
           "timeout": 6,
           "runtime": "python3.12",
           "vpc": {},
-          "versionLogicalId": "ApiLambdaVersiona34ozCAp3t9V1MIaXTfDOy2LRQExcpagZFhiS9NXt8"
+          "versionLogicalId": "ApiLambdaVersionideoAUeSCJYSM5uPU6I8On8FZRmJSh13tgi9qWsYUE"
         }
       }
     },
@@ -413,7 +413,7 @@
             "Properties": {
               "Code": {
                 "S3Bucket": "lambda-test-deployments-2435",
-                "S3Key": "serverless/lambda-test/dev/1779434481549-2026-05-22T07:21:21.549Z/lambda-test.zip"
+                "S3Key": "serverless/lambda-test/dev/1779436189342-2026-05-22T07:49:49.342Z/lambda-test.zip"
               },
               "Handler": "src/handler.lambda_handler",
               "Runtime": "python3.12",
@@ -431,14 +431,14 @@
               "ApiLogGroup"
             ]
           },
-          "ApiLambdaVersiona34ozCAp3t9V1MIaXTfDOy2LRQExcpagZFhiS9NXt8": {
+          "ApiLambdaVersionideoAUeSCJYSM5uPU6I8On8FZRmJSh13tgi9qWsYUE": {
             "Type": "AWS::Lambda::Version",
             "DeletionPolicy": "Retain",
             "Properties": {
               "FunctionName": {
                 "Ref": "ApiLambdaFunction"
               },
-              "CodeSha256": "hQvszlPzhTHnrjRcNu8sBF0kSuWCnRdra+aQaQy6ka8="
+              "CodeSha256": "WR+cQlvUDrQleyPNeXruMKuVx2Gvnz6lK1YD5CV3BkU="
             }
           },
           "HttpApi": {
@@ -547,7 +547,7 @@
           "ApiLambdaFunctionQualifiedArn": {
             "Description": "Current Lambda function version",
             "Value": {
-              "Ref": "ApiLambdaVersiona34ozCAp3t9V1MIaXTfDOy2LRQExcpagZFhiS9NXt8"
+              "Ref": "ApiLambdaVersionideoAUeSCJYSM5uPU6I8On8FZRmJSh13tgi9qWsYUE"
             },
             "Export": {
               "Name": "sls-lambda-test-dev-ApiLambdaFunctionQualifiedArn"
@@ -613,12 +613,12 @@
     "serviceProviderAwsCfStackName": "lambda-test-dev",
     "serviceProviderAwsCfStackId": "arn:aws:cloudformation:ap-northeast-1:640168422435:stack/lambda-test-dev/b52907a0-478a-11f1-9b0d-0652ec77ceb5",
     "serviceProviderAwsCfStackCreated": "2026-05-04T07:27:30.187Z",
-    "serviceProviderAwsCfStackUpdated": "2026-05-22T06:40:29.484Z",
+    "serviceProviderAwsCfStackUpdated": "2026-05-22T07:20:31.636Z",
     "serviceProviderAwsCfStackStatus": "UPDATE_COMPLETE",
     "serviceProviderAwsCfStackOutputs": [
       {
         "OutputKey": "ApiLambdaFunctionQualifiedArn",
-        "OutputValue": "arn:aws:lambda:ap-northeast-1:640168422435:function:lambda-test-dev-api:5",
+        "OutputValue": "arn:aws:lambda:ap-northeast-1:640168422435:function:lambda-test-dev-api:6",
         "Description": "Current Lambda function version",
         "ExportName": "sls-lambda-test-dev-ApiLambdaFunctionQualifiedArn"
       },
@@ -733,7 +733,7 @@
           "Properties": {
             "Code": {
               "S3Bucket": "lambda-test-deployments-2435",
-              "S3Key": "serverless/lambda-test/dev/1779434481549-2026-05-22T07:21:21.549Z/lambda-test.zip"
+              "S3Key": "serverless/lambda-test/dev/1779436189342-2026-05-22T07:49:49.342Z/lambda-test.zip"
             },
             "Handler": "src/handler.lambda_handler",
             "Runtime": "python3.12",
@@ -751,14 +751,14 @@
             "ApiLogGroup"
           ]
         },
-        "ApiLambdaVersiona34ozCAp3t9V1MIaXTfDOy2LRQExcpagZFhiS9NXt8": {
+        "ApiLambdaVersionideoAUeSCJYSM5uPU6I8On8FZRmJSh13tgi9qWsYUE": {
           "Type": "AWS::Lambda::Version",
           "DeletionPolicy": "Retain",
           "Properties": {
             "FunctionName": {
               "Ref": "ApiLambdaFunction"
             },
-            "CodeSha256": "hQvszlPzhTHnrjRcNu8sBF0kSuWCnRdra+aQaQy6ka8="
+            "CodeSha256": "WR+cQlvUDrQleyPNeXruMKuVx2Gvnz6lK1YD5CV3BkU="
           }
         },
         "HttpApi": {
@@ -867,7 +867,7 @@
         "ApiLambdaFunctionQualifiedArn": {
           "Description": "Current Lambda function version",
           "Value": {
-            "Ref": "ApiLambdaVersiona34ozCAp3t9V1MIaXTfDOy2LRQExcpagZFhiS9NXt8"
+            "Ref": "ApiLambdaVersionideoAUeSCJYSM5uPU6I8On8FZRmJSh13tgi9qWsYUE"
           },
           "Export": {
             "Name": "sls-lambda-test-dev-ApiLambdaFunctionQualifiedArn"
