@@ -1,6 +1,6 @@
 {
   "/Users/yangpei/Documents/lambda-github-webhook/serverless.yaml": {
-    "versionFramework": "4.35.0",
+    "versionFramework": "4.36.1",
     "servicePath": "/Users/yangpei/Documents/lambda-github-webhook/serverless.yaml",
     "serviceConfigFileName": "serverless.yaml",
     "service": {
@@ -10,15 +10,200 @@
         "name": "aws",
         "runtime": "python3.12",
         "region": "ap-northeast-1",
+        "role": "arn:aws:iam::640168422435:role/sls-deployment-role",
         "deploymentBucket": "lambda-test-deployments-2435",
         "stage": "dev",
         "versionFunctions": true,
         "deploymentBucketObject": {
           "name": "lambda-test-deployments-2435"
         },
-        "environment": {
-          "IS_LOCAL": "true"
-        }
+        "compiledCloudFormationTemplate": {
+          "AWSTemplateFormatVersion": "2010-09-09",
+          "Description": "The AWS CloudFormation template for this Serverless application",
+          "Resources": {
+            "ApiLogGroup": {
+              "Type": "AWS::Logs::LogGroup",
+              "Properties": {
+                "LogGroupName": "/aws/lambda/lambda-test-dev-api"
+              }
+            },
+            "ApiLambdaFunction": {
+              "Type": "AWS::Lambda::Function",
+              "Properties": {
+                "Code": {
+                  "S3Bucket": "lambda-test-deployments-2435",
+                  "S3Key": "serverless/lambda-test/dev/1779430284406-2026-05-22T06:11:24.406Z/lambda-test.zip"
+                },
+                "Handler": "src/handler.lambda_handler",
+                "Runtime": "python3.12",
+                "FunctionName": "lambda-test-dev-api",
+                "MemorySize": 1024,
+                "Timeout": 6,
+                "Role": "arn:aws:iam::640168422435:role/sls-deployment-role"
+              },
+              "DependsOn": [
+                "ApiLogGroup"
+              ]
+            },
+            "ApiLambdaVersion3J6vB6rflGW2FLZc29S4HHyDFKgN6QaxY3lmdenlMKI": {
+              "Type": "AWS::Lambda::Version",
+              "DeletionPolicy": "Retain",
+              "Properties": {
+                "FunctionName": {
+                  "Ref": "ApiLambdaFunction"
+                },
+                "CodeSha256": "uChyIoBCpHRxmx4vwMYewK4wbgeQuLlNXw7P4eh/r6I="
+              }
+            },
+            "HttpApi": {
+              "Type": "AWS::ApiGatewayV2::Api",
+              "Properties": {
+                "Name": "dev-lambda-test",
+                "ProtocolType": "HTTP"
+              }
+            },
+            "HttpApiStage": {
+              "Type": "AWS::ApiGatewayV2::Stage",
+              "Properties": {
+                "ApiId": {
+                  "Ref": "HttpApi"
+                },
+                "StageName": "$default",
+                "AutoDeploy": true,
+                "DefaultRouteSettings": {
+                  "DetailedMetricsEnabled": false
+                }
+              }
+            },
+            "ApiLambdaPermissionHttpApi": {
+              "Type": "AWS::Lambda::Permission",
+              "Properties": {
+                "FunctionName": {
+                  "Fn::GetAtt": [
+                    "ApiLambdaFunction",
+                    "Arn"
+                  ]
+                },
+                "Action": "lambda:InvokeFunction",
+                "Principal": "apigateway.amazonaws.com",
+                "SourceArn": {
+                  "Fn::Join": [
+                    "",
+                    [
+                      "arn:",
+                      {
+                        "Ref": "AWS::Partition"
+                      },
+                      ":execute-api:",
+                      {
+                        "Ref": "AWS::Region"
+                      },
+                      ":",
+                      {
+                        "Ref": "AWS::AccountId"
+                      },
+                      ":",
+                      {
+                        "Ref": "HttpApi"
+                      },
+                      "/*"
+                    ]
+                  ]
+                }
+              }
+            },
+            "HttpApiIntegrationApi": {
+              "Type": "AWS::ApiGatewayV2::Integration",
+              "Properties": {
+                "ApiId": {
+                  "Ref": "HttpApi"
+                },
+                "IntegrationType": "AWS_PROXY",
+                "IntegrationUri": {
+                  "Fn::GetAtt": [
+                    "ApiLambdaFunction",
+                    "Arn"
+                  ]
+                },
+                "PayloadFormatVersion": "2.0",
+                "TimeoutInMillis": 30000
+              }
+            },
+            "HttpApiRouteAnyWebhook": {
+              "Type": "AWS::ApiGatewayV2::Route",
+              "Properties": {
+                "ApiId": {
+                  "Ref": "HttpApi"
+                },
+                "RouteKey": "ANY /webhook",
+                "Target": {
+                  "Fn::Join": [
+                    "/",
+                    [
+                      "integrations",
+                      {
+                        "Ref": "HttpApiIntegrationApi"
+                      }
+                    ]
+                  ]
+                }
+              },
+              "DependsOn": "HttpApiIntegrationApi"
+            }
+          },
+          "Outputs": {
+            "ServerlessDeploymentBucketName": {
+              "Value": "lambda-test-deployments-2435",
+              "Export": {
+                "Name": "sls-lambda-test-dev-ServerlessDeploymentBucketName"
+              }
+            },
+            "ApiLambdaFunctionQualifiedArn": {
+              "Description": "Current Lambda function version",
+              "Value": {
+                "Ref": "ApiLambdaVersion3J6vB6rflGW2FLZc29S4HHyDFKgN6QaxY3lmdenlMKI"
+              },
+              "Export": {
+                "Name": "sls-lambda-test-dev-ApiLambdaFunctionQualifiedArn"
+              }
+            },
+            "HttpApiId": {
+              "Description": "Id of the HTTP API",
+              "Value": {
+                "Ref": "HttpApi"
+              },
+              "Export": {
+                "Name": "sls-lambda-test-dev-HttpApiId"
+              }
+            },
+            "HttpApiUrl": {
+              "Description": "URL of the HTTP API",
+              "Value": {
+                "Fn::Join": [
+                  "",
+                  [
+                    "https://",
+                    {
+                      "Ref": "HttpApi"
+                    },
+                    ".execute-api.",
+                    {
+                      "Ref": "AWS::Region"
+                    },
+                    ".",
+                    {
+                      "Ref": "AWS::URLSuffix"
+                    }
+                  ]
+                ]
+              },
+              "Export": {
+                "Name": "sls-lambda-test-dev-HttpApiUrl"
+              }
+            }
+          }
+        },
+        "vpc": {}
       },
       "functions": {
         "api": {
@@ -28,10 +213,18 @@
               "httpApi": {
                 "path": "/webhook",
                 "method": "ANY"
-              }
+              },
+              "resolvedMethod": "ANY",
+              "resolvedPath": "/webhook"
             }
           ],
-          "name": "lambda-test-dev-api"
+          "name": "lambda-test-dev-api",
+          "package": {},
+          "memory": 1024,
+          "timeout": 6,
+          "runtime": "python3.12",
+          "vpc": {},
+          "versionLogicalId": "ApiLambdaVersion3J6vB6rflGW2FLZc29S4HHyDFKgN6QaxY3lmdenlMKI"
         }
       }
     },
@@ -39,15 +232,200 @@
       "name": "aws",
       "runtime": "python3.12",
       "region": "ap-northeast-1",
+      "role": "arn:aws:iam::640168422435:role/sls-deployment-role",
       "deploymentBucket": "lambda-test-deployments-2435",
       "stage": "dev",
       "versionFunctions": true,
       "deploymentBucketObject": {
         "name": "lambda-test-deployments-2435"
       },
-      "environment": {
-        "IS_LOCAL": "true"
-      }
+      "compiledCloudFormationTemplate": {
+        "AWSTemplateFormatVersion": "2010-09-09",
+        "Description": "The AWS CloudFormation template for this Serverless application",
+        "Resources": {
+          "ApiLogGroup": {
+            "Type": "AWS::Logs::LogGroup",
+            "Properties": {
+              "LogGroupName": "/aws/lambda/lambda-test-dev-api"
+            }
+          },
+          "ApiLambdaFunction": {
+            "Type": "AWS::Lambda::Function",
+            "Properties": {
+              "Code": {
+                "S3Bucket": "lambda-test-deployments-2435",
+                "S3Key": "serverless/lambda-test/dev/1779430284406-2026-05-22T06:11:24.406Z/lambda-test.zip"
+              },
+              "Handler": "src/handler.lambda_handler",
+              "Runtime": "python3.12",
+              "FunctionName": "lambda-test-dev-api",
+              "MemorySize": 1024,
+              "Timeout": 6,
+              "Role": "arn:aws:iam::640168422435:role/sls-deployment-role"
+            },
+            "DependsOn": [
+              "ApiLogGroup"
+            ]
+          },
+          "ApiLambdaVersion3J6vB6rflGW2FLZc29S4HHyDFKgN6QaxY3lmdenlMKI": {
+            "Type": "AWS::Lambda::Version",
+            "DeletionPolicy": "Retain",
+            "Properties": {
+              "FunctionName": {
+                "Ref": "ApiLambdaFunction"
+              },
+              "CodeSha256": "uChyIoBCpHRxmx4vwMYewK4wbgeQuLlNXw7P4eh/r6I="
+            }
+          },
+          "HttpApi": {
+            "Type": "AWS::ApiGatewayV2::Api",
+            "Properties": {
+              "Name": "dev-lambda-test",
+              "ProtocolType": "HTTP"
+            }
+          },
+          "HttpApiStage": {
+            "Type": "AWS::ApiGatewayV2::Stage",
+            "Properties": {
+              "ApiId": {
+                "Ref": "HttpApi"
+              },
+              "StageName": "$default",
+              "AutoDeploy": true,
+              "DefaultRouteSettings": {
+                "DetailedMetricsEnabled": false
+              }
+            }
+          },
+          "ApiLambdaPermissionHttpApi": {
+            "Type": "AWS::Lambda::Permission",
+            "Properties": {
+              "FunctionName": {
+                "Fn::GetAtt": [
+                  "ApiLambdaFunction",
+                  "Arn"
+                ]
+              },
+              "Action": "lambda:InvokeFunction",
+              "Principal": "apigateway.amazonaws.com",
+              "SourceArn": {
+                "Fn::Join": [
+                  "",
+                  [
+                    "arn:",
+                    {
+                      "Ref": "AWS::Partition"
+                    },
+                    ":execute-api:",
+                    {
+                      "Ref": "AWS::Region"
+                    },
+                    ":",
+                    {
+                      "Ref": "AWS::AccountId"
+                    },
+                    ":",
+                    {
+                      "Ref": "HttpApi"
+                    },
+                    "/*"
+                  ]
+                ]
+              }
+            }
+          },
+          "HttpApiIntegrationApi": {
+            "Type": "AWS::ApiGatewayV2::Integration",
+            "Properties": {
+              "ApiId": {
+                "Ref": "HttpApi"
+              },
+              "IntegrationType": "AWS_PROXY",
+              "IntegrationUri": {
+                "Fn::GetAtt": [
+                  "ApiLambdaFunction",
+                  "Arn"
+                ]
+              },
+              "PayloadFormatVersion": "2.0",
+              "TimeoutInMillis": 30000
+            }
+          },
+          "HttpApiRouteAnyWebhook": {
+            "Type": "AWS::ApiGatewayV2::Route",
+            "Properties": {
+              "ApiId": {
+                "Ref": "HttpApi"
+              },
+              "RouteKey": "ANY /webhook",
+              "Target": {
+                "Fn::Join": [
+                  "/",
+                  [
+                    "integrations",
+                    {
+                      "Ref": "HttpApiIntegrationApi"
+                    }
+                  ]
+                ]
+              }
+            },
+            "DependsOn": "HttpApiIntegrationApi"
+          }
+        },
+        "Outputs": {
+          "ServerlessDeploymentBucketName": {
+            "Value": "lambda-test-deployments-2435",
+            "Export": {
+              "Name": "sls-lambda-test-dev-ServerlessDeploymentBucketName"
+            }
+          },
+          "ApiLambdaFunctionQualifiedArn": {
+            "Description": "Current Lambda function version",
+            "Value": {
+              "Ref": "ApiLambdaVersion3J6vB6rflGW2FLZc29S4HHyDFKgN6QaxY3lmdenlMKI"
+            },
+            "Export": {
+              "Name": "sls-lambda-test-dev-ApiLambdaFunctionQualifiedArn"
+            }
+          },
+          "HttpApiId": {
+            "Description": "Id of the HTTP API",
+            "Value": {
+              "Ref": "HttpApi"
+            },
+            "Export": {
+              "Name": "sls-lambda-test-dev-HttpApiId"
+            }
+          },
+          "HttpApiUrl": {
+            "Description": "URL of the HTTP API",
+            "Value": {
+              "Fn::Join": [
+                "",
+                [
+                  "https://",
+                  {
+                    "Ref": "HttpApi"
+                  },
+                  ".execute-api.",
+                  {
+                    "Ref": "AWS::Region"
+                  },
+                  ".",
+                  {
+                    "Ref": "AWS::URLSuffix"
+                  }
+                ]
+              ]
+            },
+            "Export": {
+              "Name": "sls-lambda-test-dev-HttpApiUrl"
+            }
+          }
+        }
+      },
+      "vpc": {}
     },
     "dashboard": {
       "isEnabledForService": false,
@@ -59,19 +437,15 @@
       "instanceParameters": null
     },
     "error": {
-      "message": "`python3 -u /Users/yangpei/.serverless/releases/4.35.0/package/lib/plugins/aws/invoke-local/runtime-wrappers/invoke.py src/handler lambda_handler` Exited with code 1",
-      "stack": "Error: `python3 -u /Users/yangpei/.serverless/releases/4.35.0/package/lib/plugins/aws/invoke-local/runtime-wrappers/invoke.py src/handler lambda_handler` Exited with code 1\n    at ChildProcess.<anonymous> (file:///Users/yangpei/.serverless/releases/4.35.0/package/dist/sf-core.js:407:62419)\n    at ChildProcess.emit (node:events:508:28)\n    at ChildProcess.emit (node:domain:489:12)\n    at maybeClose (node:internal/child_process:1100:16)\n    at Socket.<anonymous> (node:internal/child_process:457:11)\n    at Socket.emit (node:events:508:28)\n    at Socket.emit (node:domain:489:12)\n    at Pipe.<anonymous> (node:net:346:12)",
-      "code": 1
+      "message": "An error occurred: ApiLambdaFunction - Resource handler returned message: \"The role defined for the function cannot be assumed by Lambda. (Service: Lambda, Status Code: 400, Request ID: b6046184-3082-4aaf-8e2b-87275370a247) (SDK Attempt Count: 1)\" (RequestToken: 1e174622-6459-c26a-d959-880e3f643cd1, HandlerErrorCode: InvalidRequest).",
+      "stack": "ServerlessError2: An error occurred: ApiLambdaFunction - Resource handler returned message: \"The role defined for the function cannot be assumed by Lambda. (Service: Lambda, Status Code: 400, Request ID: b6046184-3082-4aaf-8e2b-87275370a247) (SDK Attempt Count: 1)\" (RequestToken: 1e174622-6459-c26a-d959-880e3f643cd1, HandlerErrorCode: InvalidRequest).\n    at file:///Users/yangpei/.serverless/releases/4.36.1/package/dist/sf-core.js:1782:828\n    at process.processTicksAndRejections (node:internal/process/task_queues:104:5)\n    at async AwsDeploy.update (file:///Users/yangpei/.serverless/releases/4.36.1/package/dist/sf-core.js:1782:32232)\n    at async aws:deploy:deploy:updateStack (file:///Users/yangpei/.serverless/releases/4.36.1/package/dist/sf-core.js:1793:8008)\n    at async PluginManager.runHooks (file:///Users/yangpei/.serverless/releases/4.36.1/package/dist/sf-core.js:2351:11241)\n    at async PluginManager.invoke (file:///Users/yangpei/.serverless/releases/4.36.1/package/dist/sf-core.js:2351:12010)\n    at async PluginManager.spawn (file:///Users/yangpei/.serverless/releases/4.36.1/package/dist/sf-core.js:2351:12375)\n    at async PluginManager.runHooks (file:///Users/yangpei/.serverless/releases/4.36.1/package/dist/sf-core.js:2351:11241)\n    at async PluginManager.invoke (file:///Users/yangpei/.serverless/releases/4.36.1/package/dist/sf-core.js:2351:12010)\n    at async PluginManager.run (file:///Users/yangpei/.serverless/releases/4.36.1/package/dist/sf-core.js:2351:12707)",
+      "code": "AWS_CLOUD_FORMATION_UPDATE_STACK_INTERNAL_LAMBDA_FUNCTION_UPDATE_FAILED"
     },
-    "serviceRawFile": "service: lambda-test\nframeworkVersion: '4'\n\nprovider:\n  name: aws\n  runtime: python3.12\n  region: ap-northeast-1\n  deploymentBucket:\n    name: lambda-test-deployments-2435\n\nfunctions:\n  api:\n    handler: src/handler.lambda_handler\n    events:\n    - httpApi:\n        path: /webhook\n        method: ANY",
+    "serviceRawFile": "service: lambda-test\nframeworkVersion: '4'\n\nprovider:\n  name: aws\n  runtime: python3.12\n  region: ap-northeast-1\n  role: arn:aws:iam::640168422435:role/sls-deployment-role   # 👈 指定部署角色\n  deploymentBucket:\n    name: lambda-test-deployments-2435\n\nfunctions:\n  api:\n    handler: src/handler.lambda_handler\n    events:\n    - httpApi:\n        path: /webhook\n        method: ANY",
     "command": [
-      "invoke",
-      "local"
+      "deploy"
     ],
-    "options": {
-      "function": "api",
-      "path": "events/event.json"
-    },
+    "options": {},
     "orgId": "4433eee4-58bf-4cb7-9ac1-23fa43f775ff",
     "orgName": "edwardyang",
     "userId": "t3jYLwlHKDrrsxY0lk",
