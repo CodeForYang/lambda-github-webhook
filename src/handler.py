@@ -26,6 +26,10 @@ def lambda_handler(event, context):
     payload = event['body'].encode('utf-8')
 
     SECRET = get_secret()
+
+    print("isBase64Encoded:", event.get('isBase64Encoded', False))
+    print("Raw body (first 200 chars):", event['body'][:200])
+
     mac = hmac.new(SECRET.encode('utf-8'), msg=payload, digestmod=hashlib.sha256)
     local_signature = mac.hexdigest()
 
