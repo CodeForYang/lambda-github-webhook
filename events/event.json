@@ -1,49 +1,34 @@
- {
-    "version": "2.0",
-    "routeKey": "ANY /webhook",
-    "rawPath": "/webhook",
-    "rawQueryString": "",
-    "headers": {
-        "accept": "*/*",
-        "content-length": "7630",
-        "content-type": "application/json",
-        "host": "mpkls95d85.execute-api.ap-northeast-1.amazonaws.com",
-        "user-agent": "GitHub-Hookshot/88acc88",
-        "x-amzn-trace-id": "Root=1-69f84edf-6c086200152ef91268d357cc",
-        "x-forwarded-for": "140.82.115.55",
-        "x-forwarded-port": "443",
-        "x-forwarded-proto": "https",
-        "x-github-delivery": "61d1672a-478d-11f1-897b-f769be9a2d90",
-        "x-github-event": "push",
-        "x-github-hook-id": "616362280",
-        "x-github-hook-installation-target-id": "556539135",
-        "x-github-hook-installation-target-type": "repository",
-        "x-hub-signature": "sha1=22d478268a921288bf9c136845d0492f3443297a",
-        "x-hub-signature-256": "sha256=83a36533959dd34e5b9b6a577b12138d671ff67fcd953b47fb860e02dad24ab1"
+{
+  "version": "2.0",
+  "routeKey": "POST /webhook",
+  "rawPath": "/webhook",
+  "rawQueryString": "",
+  "headers": {
+    "accept": "*/*",
+    "content-type": "application/json",
+    "host": "xxx.execute-api.ap-northeast-1.amazonaws.com",
+    "user-agent": "GitHub-Hookshot/12345678",
+    "x-github-delivery": "fdf79fc5-2cd8-41ba-a701-dbc5001cdc6d",
+    "x-github-event": "push",
+    "x-github-hook-id": "123456789",
+    "x-github-hook-installation-target-id": "123456789",
+    "x-github-hook-installation-target-type": "repository",
+    "x-hub-signature": "sha1=631932d638713ae8e28e2c137848b226624cdbad",
+    "x-hub-signature-256": "sha256=7a2d6f71398b7d71de3e0496e36a786250a1d8765ce2fd6611f95fd6928acf61",
+    "x-forwarded-for": "140.82.115.55",
+    "x-forwarded-port": "443",
+    "x-forwarded-proto": "https"
+  },
+  "requestContext": {
+    "http": {
+      "method": "POST",
+      "path": "/webhook",
+      "protocol": "HTTP/1.1",
+      "sourceIp": "140.82.115.55",
+      "userAgent": "GitHub-Hookshot/12345678"
     },
-    "requestContext": {
-        "accountId": "640168422435",
-        "apiId": "mpkls95d85",
-        "domainName": "mpkls95d85.execute-api.ap-northeast-1.amazonaws.com",
-        "domainPrefix": "mpkls95d85",
-        "http": {
-        "method": "POST",
-        "path": "/webhook",
-        "protocol": "HTTP/1.1",
-        "sourceIp": "140.82.115.55",
-        "userAgent": "GitHub-Hookshot/88acc88"
-            },
-            "requestId": "c1FC6gIBtjMEM0Q=",
-            "routeKey": "ANY /webhook",
-            "stage": "$default",
-            "time": "04/May/2026:07:46:39 +0000",
-            "timeEpoch": 1777880799089
-        },
-    "body": {
-        "ref":"refs/heads/main",
-        "head_commit": {
-            "id":"test123"
-            }
-        },
-    "isBase64Encoded": false
+    "stage": "$default"
+  },
+  "body": "{\"ref\":\"refs/heads/main\",\"before\":\"0000000000000000000000000000000000000000\",\"after\":\"abc123def456\",\"repository\":{\"id\":123456789,\"name\":\"lambda-github-webhook\",\"full_name\":\"CodeForYang/lambda-github-webhook\",\"private\":false,\"owner\":{\"name\":\"CodeForYang\",\"email\":\"user@example.com\"}},\"pusher\":{\"name\":\"github-user\",\"email\":\"user@example.com\"},\"sender\":{\"login\":\"github-user\",\"id\":123456789},\"created\":false,\"deleted\":false,\"forced\":false,\"compare\":\"https://github.com/CodeForYang/lambda-github-webhook/compare/0000000000000000000000000000000000000000...abc123def456\",\"commits\":[{\"id\":\"abc123def456\",\"tree_id\":\"tree123\",\"distinct\":true,\"message\":\"Test commit\",\"timestamp\":\"2026-05-25T14:48:56.796542\",\"url\":\"https://github.com/CodeForYang/lambda-github-webhook/commit/abc123def456\",\"author\":{\"name\":\"Test User\",\"email\":\"user@example.com\",\"username\":\"testuser\"},\"committer\":{\"name\":\"Test User\",\"email\":\"user@example.com\",\"username\":\"testuser\"},\"added\":[\"file.txt\"],\"removed\":[],\"modified\":[]}],\"head_commit\":{\"id\":\"abc123def456\",\"tree_id\":\"tree123\",\"message\":\"Test commit\",\"timestamp\":\"2026-05-25T14:48:56.796548\",\"author\":{\"name\":\"Test User\",\"email\":\"user@example.com\",\"username\":\"testuser\"}}}",
+  "isBase64Encoded": false
 }
